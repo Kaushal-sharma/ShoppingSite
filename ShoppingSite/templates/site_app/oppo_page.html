@@ -1,0 +1,55 @@
+{% extends 'site_app/base_page.html' %}
+{% load static %}
+{% block title %} Shopping | Mobiles | oppo{% endblock title %}
+{% block content %}
+<div class="container-flex">
+  <div class='row' >
+    <div class="col-sm-3">
+      <h2 class="ml-3">Oppo Mobiles</h2>
+      <div class="row p-3">
+        <div class="col">
+          <h4 class="text-xl font-sans">Filter</h4>
+          <div class="list-group">
+            <a href="{% url 'oppo_page' %}" class="list-group-item list-group-item-actione text-black hover:bg-purple-700 hover:text-white">Mixture Price</a>
+            <a href="{% url 'oppo_data' 'low' %}" class="list-group-item list-group-item-action text-black hover:bg-purple-700 hover:text-white">Low To High Price</a>
+            <a href="{% url 'oppo_data' 'high' %}" class="list-group-item list-group-item-action text-black hover:bg-purple-700 hover:text-white">High To Low Price</a>
+          </div>
+      </div>
+    </div>
+  </div>
+
+      <!--Mobiles-->
+    <div class="col-sm-9" ">
+      <div class="row pt-5">
+        {% for data in oppo_phone %}
+        <div class="col-sm-3 p-5">
+          <img src="{{data.product_image.url}}" class="figure-img img-fluid rounded" alt="...">
+        </div>
+        <div class="col-sm-9 p-5">
+          <div class="row">
+            <h2 class="font-sans text-3xl font-semibold">{{data.title}}</h2><hr>
+            <div class="co-sm-6">
+              <span class="font-sans text-lg font-extralight tracking-wider">Discount Price:</span><span class="font-sans text-xl font-extralight tracking-wider">{{data.discount_price}}</span><br>
+              <span class="font-sans text-lg font-extralight tracking-wider">SellingPrice: </span><strike class="font-sans text-xl font-extralight tracking-wider">{{data.selling_price}}</strike>
+            </div>
+          </div>
+          <hr>
+          <div class="row pt-3">
+            <span class="font-sans text-lg font-light tracking-wide">{{data.description}}</span>
+          </div>
+          <hr>
+          <div class="row pt-3">
+            <div class="col-sm-3">
+              <a class="nav-link m-2 rounded bg-red-500 text-white text-center" href="http://localhost:8000/site_app/product_detail?pid={{data.id}}">View Details</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div><!--row end-->
+
+    </div>
+  </div>
+
+</div><!--Container flex end -->
+
+{% endblock content %}

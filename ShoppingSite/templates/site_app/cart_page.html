@@ -1,0 +1,93 @@
+{% extends 'site_app/base_page.html' %}
+{% load static %}
+{% block title %}Shopping | Cart {% endblock title %}
+{% block content %}
+
+<section class="hero">
+    <div class="container">
+        <div class="row">
+          <div class="col text-center">
+            <h2>My Cart</h2>
+          </div>
+        </div>
+    </div>
+</section>
+
+<!--Add to cart list -->
+<section class="pt-0">
+    <div class="container">
+        <div class="row gx-5" >
+            <div class="col-md-7 p-4">
+                <h2>Products List</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-sm-2"><span>PRODUCTS</span></div>
+                    <div class="col-sm-2 text-center"><span>PRICE</span></div>
+                    <div class="col-sm-3 text-center"><span>QUANTTITY</span></div>
+                    <div class="col-sm-2 text-center"><span>TOTAL</span></div>
+
+                </div>
+                <hr>
+                {% if cart %}
+                  {% for data in cart %}
+                  <div class="row p-2 align-item-center remove-row" id="remove">
+                      <div class="col-sm-2"><img src="{{data.product.product_image.url}}" alt="Image not show" class="" style='width: 50px;'></div>
+                      <div class="col-sm-2 text-center"><span>{{data.product.discount_price}}</span></div>
+                      <div class="col-sm-3 text-center">
+                          <a class="minus-cart btn" productid={{data.product.id}}><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
+                          <span id='myspan'>{{data.quantity}}</span>
+                          <a class="plus-cart btn" productid={{data.product.id}}><i class="fa fa-plus-circle" aria-hidden="true"></i></a>
+                      </div>
+                      <div class="col-sm-2 text-center"><span>{{data.price}}</span></div>
+                      <div class="col-sm-3 ">
+                        <a class="remove-cart nav-link m-3 rounded bg-red-500 text-white text-center" style="cursor: pointer" productid="{{data.product.id}}">Remove</a>
+                      </div>
+                      <hr>
+                  </div>
+                  {% endfor %}
+                  {% else %}
+                    <div class="row">
+                      <div class="col text-center">
+                        <h5 class="text-red-500">Your cart is empty !</h5>
+                        <img src="{% static 'images/loader.gif' %}">
+                      </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="col-md-4 m-3 ">
+                <div class="row border">
+                    <div class="col p-4">
+                      <h2>Cart Summary</h2>
+                       <hr>
+                       <div class="row p-3">
+                           <div class="col-sm-6"><span>Sub Total:</span></div>
+                           <div class="col-sm-6 justify-content-end text-right"><span id='subtotal' class="text-thin">{{sub_total}}</span></div>
+                       </div>
+                       <div class="row p-3">
+                           <div class="col-sm-6"><span>Shipping charge:</span></div>
+                           <div class="col-sm-6 align-item-end text-right"><span id='shipcharg'>{{ship_charg}}</span></div>
+                       </div>
+                       <hr>
+                       <div class="row p-3">
+                           <div class="col-sm-6"><span style="font-weight: bold;">Total:</span></div>
+                           <div class="col-sm-6 justify-content-end text-right"><span style="font-weight: bold;" id='total'><i class="fa fa-inr" aria-hidden="true"></i>{{total}}</span></div>
+                       </div>
+                       <hr>
+                       <div class="row">
+                         {% for data in userobj %}
+                          <a class="btn btn-primary" type="button" href="http://localhost:8000/site_app/address_page?userid={{data.id}}">Checkout</a>
+                         {% endfor %}
+                       </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/javascript.js' %}"></script>
+{% endblock content %}

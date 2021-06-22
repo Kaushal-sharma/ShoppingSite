@@ -1,0 +1,97 @@
+
+{% extends 'site_app/base_page.html' %}
+{% load static %}
+{% block title %}Shopping | Orders{% endblock title %}
+
+{% block content %}
+<div class="container">
+  <div class='row p-4'> <!--first row-->
+    <h2>My Orders</h2>
+    <div class="col p-4">
+        <div class="row p-4 mb-5 border">
+          <div class="col p-3">
+            <h2 class="text-center">Thanks for Shopping</h2><hr>
+            <div class="row">
+                <div class="col-sm-6"><h3><span class="text-blue-500">Order Placed For </span></h3></div>
+                <div class="col-sm-6 text-right"><h3><span class="text-black-500"><i class="fa fa-inr" aria-hidden="true"></i>{{total}}</span></h3></div>
+            </div>
+              <span class="font-bold">Your {{count_order_item}} items</span>
+          </div>
+
+        </div>
+
+
+      {% if customer_order %}
+        <div class="row border p-4 mb-5">
+          <div class="col p-3">
+            <h5>Delivery Address</h5><hr>
+            <h6><span>{{customer_order.user.first_name}} {{customer_order.user.last_name}}</span></h6>
+            <span>{{customer_order.address}}</span><br>
+            <span>{{customer_order.zipcode}}</span><br>
+            <span>{{customer_order.phone}}</span><br>
+            <span>{{customer_order.city}}, {{customer_order.state}}</span>
+          </div>
+        </div>
+      {% endif %}
+
+
+      {% for data in order %}
+      <div class="row p-2 border"><!--second row-->
+        <div class="col-sm-2 mt-3">
+          <img src="{{data.product.product_image.url}}" alt="Image not show" class="mt-2" style='width: 100px;'>
+        </div>
+        <div class="col-sm-7 mt-3">
+          <p><span class="font-bold">{{data.product.title}}</span></p>
+          <p><span>{{data.product.discount_price}}</span></p>
+          <p><span>{{data.product.description}}</span></p>
+
+          {% if data.status == 'Pending' %}
+            <span>{{data.status}}</span>
+            <div class="progress mt-3">
+              <div class="progres-bar bg-red-500" role="progressbar" style="width: 0%;" aria-valuenow="40" aria-valuemin="40" aria-valuemin="100"></div>
+            </div>
+          {% endif %}
+
+          {% if data.status == 'Accepted' %}
+            <span>Status: {{data.status}}</span>
+            <div class="progress mt-3">
+              <div class="progres-bar bg-blue-500" role="progressbar" style="width: 20%;" aria-valuenow="40" aria-valuemin="40" aria-valuemin="100"></div>
+            </div>
+          {% endif %}
+
+          {% if data.status == 'Packed' %}
+          <span>Status: {{data.status}}</span>
+          <div class="progress mt-3">
+            <div class="progres-bar bg-green-400" role="progressbar" style="width: 50%;" aria-valuenow="40" aria-valuemin="40" aria-valuemin="100"></div>
+          </div>
+          {% endif %}
+
+          {% if data.status == 'On The Way' %}
+          <span>Status: {{data.status}}</span>
+          <div class="progress mt-3">
+            <div class="progres-bar bg-yellow-500" role="progressbar" style="width: 70%;" aria-valuenow="40" aria-valuemin="40" aria-valuemin="100"></div>
+          </div>
+          {% endif %}
+
+          {% if data.status == 'Delivered' %}
+          <span>Status: {{data.status}}</span>
+          <div class="progress mt-3">
+            <div class="progres-bar bg-green-500" role="progressbar" style="width: 100%;" aria-valuenow="40" aria-valuemin="40" aria-valuemin="100"></div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-sm-3 mt-3">
+          <p><span class="text-right font-bold">Quantity:</span>&nbsp;&nbsp;<span class="text-blue-500">{{data.quantity}}</span></p>
+          <p><span class="text-right font-bold">Total:</span>&nbsp;&nbsp;<span>{{data.price}}</span></p>
+          <p><span class="text-right font-bold">Delivery Expected:</span>&nbsp;&nbsp;<span>{{data.delivery_date}}</span></p>
+        </div>
+      </div><!--second row end-->
+      <br></br>
+      {% endfor %}
+
+    </div>
+  </div><!--first row end -->
+
+</div>
+
+{% endblock content %}

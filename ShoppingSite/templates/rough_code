@@ -1,0 +1,201 @@
+
+
+
+
+
+<div class="col-sm-6" >
+  <form class="" action="">
+    <div class="input-group">
+      <input type="text" class="form-control m-2" placeholder="Search for brand and product">
+    </div>
+  </form>
+</div>
+
+<!--Second navbar-->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+
+
+
+
+#orderpage dat
+
+<!-- this code of checkout page-->
+<form action="#" method="POST" name='CashForm' class="p-5 mb-4 bg-white rounded radio-form" nonvalidate style="border: 1px solid rgb(240, 240, 240)">
+  {% csrf_token %}
+  <h5 class="mb-3">Select Payment Way:</h5>
+  {% for data in customerid %}
+  <div class="form-check mb-3">
+    <label class="form-check-label" for="flexRadioDefault1">1. </label>
+    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" value="1">
+    <label class="form-check-label" for="flexRadioDefault1" id='label1'>Cash on delivery</label>
+  </div>
+  <div class="form-check mb-3">
+    <label class="form-check-label" for="flexRadioDefault1">2. </label>
+    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" value="2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <label class="form-check-label" for="flexRadioDefault2" id='label2'>PayPal</label>
+  </div>
+{% endfor %}
+</form>
+
+{% for data in customerid %}
+  <div class="row p-2">
+    <a class="btn btn-success" type="submit" id="btn-order" href="http://localhost:8000/site_app/order_page?customerid={{data.id}}">Continue</a>
+  </div>
+{% endfor %}
+
+
+
+
+  {% for data in product %}
+    <div class="card mb+-2">
+      <div class="card-body">
+        <div class="row">
+        <div class="col-sm-2">
+          <img src="{{data.product_image.url}}" alt="Image not show" class="" style='width: 100px;'>
+        </div>
+        <div class="col-sm-10">
+          <h5>{{data.title}}</h5>
+          <p>Quantity: {{data.quantity}}</p>
+          <p>Description: {{data.description}}
+          <p class="fw-bold">Price: {{data.selling_price}}</p>
+        </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+
+
+  <form class="" action="" method="post">
+    {% csrf_token %}
+    {% for data in cartdetails %}
+    <input type="hidden" name="productid" value="{{data.product.id}}">
+    {% endfor %}
+  </form>
+
+
+  //order canccel button
+  <form class="" action="{% url 'delete_order' %}" method="post">
+    {% csrf_token %}
+    <input type="hidden" name="productid" value="{{data.product.id}}">
+    <input type="hidden" name="deleteid" value="{{data.id}}">
+  </form>
+  <a class="btn btn-danger mt-4 mb-1" href="http://localhost:8000/site_app/delete_order">Cancel Item</a>
+
+
+
+  //checkout_page code
+
+    <div class="row">
+      <div class="col " style="border: 1px solid rgb(240, 240, 240)">
+        <h3>Your Cart Details</h3>
+        <hr>
+        {% for data in cartdetails %}
+        <div class="row p-2">
+          <div class="col-sm-9">{{data.product.title}}</div>
+          <div class="col-sm-3">{{data.price}}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+
+
+    //index_page code
+    <div class="container-flex">
+      <div class="row">
+        <div class="col-sm-6">
+          <img class="img-fluid" src="{% static 'images/vector1.jpg' %}" style="height: auto; max-width: 100%;">
+        </div>
+        <div class="col-sm-6" style="padding: 160px; text-align: center;">
+          <h1>"It is better think | To purchase better things"</h1>
+          <h1>Get 30% off on Every Product</h1>
+        </div>
+      </div>
+
+
+      <!--Tv-->
+      <div class="row pt-5">
+        <div class="col-sm-6 p-5">
+          <img src="{% static 'images/tv.jpg' %} " class="rounded float-start" alt="." style="max-width: 100%;">
+        </div>
+        <div class="col-sm-6 p-5">
+          <h4>Apple's biggest strength is that it designs its own hardware and software. This gives the company the power to make an operating system and suite of apps that are tailor-made and optimized for the Mac. Apple can also plan out new Mac hardware based on the software it's currently developing.</h4>
+          <div class="row">
+            <div class="col-sm-6"><a class="nav-link m-3 " href="#" style="background-color: black; color:white; text-align: center;">View more</a></div>
+          </div>
+        </div>
+      </div>
+
+            <!--Mobiles-->
+            <div class="row pt-5">
+              <div class="col-sm-6 p-5" style="background-color: rgb(246, 246, 246);">
+                <h4>ASUSTeK Computer Inc., known as ASUS, is a Taiwanese multinational computer hardware and electronics company was founded in 1989 in Taiwan. ASUS is one of the world's largest computer hardware companies. Its products include desktops, PC peripherals, laptops, smartphones, tablets and hybrid devices.</h4>
+                <div class="row">
+                  <div class="col-sm-6"><a class="nav-link m-3" href="#" style="background-color: black; color:white; text-align: center;">View more</a></div>
+                </div>
+              </div>
+              <div class="col-sm-6 p-5" style="background-color: rgb(246, 246, 246);">
+                <img src="{% static 'images/mobilebanner.png' %} " class="rounded float-start" alt="." style="max-width: 100%;">
+              </div>
+            </div>
+
+      <!--Laptop-->
+      <div class="row pt-5">
+        <div class="col-sm-6 p-5">
+          <img src="{% static 'images/hp.jpg' %} " class="rounded float-start" alt=".">
+        </div>
+        <div class="col-sm-6 p-5">
+          <h4>Best HP laptops 2021: the top HP laptops we've seen and tested. There are loads of compelling reasons why you should go with the best HP laptops. They're known for touting a lot of power, excellent performance, and a great feature set in an elegant and robust yet affordable package</h4>
+          <div class="row">
+            <div class="col-sm-6"><a class="nav-link m-3 " href="#" style="background-color: black; color:white; text-align: center;">View more</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+
+    <!--First slider -->
+    <div class="m-3 border">
+      <h4>Deals of the day</h4>
+      <div class="owl-carousel" id="slider1">
+        {% for data in product_a_m %}
+        <a href="" class="btn px-4 py-3">
+          <div class="item border">
+            <img src="{{data.product_image.url}}" alt="Not show" height="100px">
+            <span class="fw-bold">{{data.title}}</span><br><span class="fs-5">{{data.selling_price}}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+
+      <h4>Deals with Son TV</h4>
+      <div class="owl-carousel" id="slider1">
+        {% for data in product_s_t %}
+        <a href="" class="btn px-4 py-3">
+          <div class="item border">
+            <img src="{{data.product_image.url}}" alt="Not show" height="100px">
+            <span class="fw-bold">{{data.title}}</span><br><span class="fs-5">{{data.selling_price}}</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+
+client ID= Ac8xM0DlRIl0y2xMRGoP9Jo49dOFML3VevSayAbGRN-52flsavDOipo2OceRmUk1DD1JNEC4_kqhP7Hd
+Buyer Account::
+    e:kaushalsharma@gmail.com
+    p:123buyeraccount
+Seller Account:
+    e:shopmerchant@gmail.com
+    P:123merchantaccount
+
+merchant & buyer account: https://www.sandbox.paypal.com/us/signin

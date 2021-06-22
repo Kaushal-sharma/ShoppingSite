@@ -1,0 +1,52 @@
+{% extends 'site_app/base_page.html' %}
+{% load static %}
+{% block title %}Shopping | Checkout {% endblock title %}
+
+{% block content %}
+<!--hero-->
+
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h2>Edit your Address</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="row">
+            <div class="col">
+                <h3>Check Delivery Address</h3>
+                <hr>
+                <form action="{% url 'update' %}" method="POST" class="p-5 mb-4 bg-white rounded" nonvalidate style="border: 1px solid rgb(240, 240, 240)">
+                  {% csrf_token %}
+                  <input type='hidden' name='customerdataid' value='{{customerdata.id}}'>
+
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <p>{{error}}</p>
+                    {% endfor %}
+                  {% endif %}
+
+                  {% for fm in form_value %}
+                   <div class="p-2">{{fm.label_tag}}</div>
+                   <div>{{fm}} {{fm.errors | striptags}} </div>
+                   <br>
+                  {% endfor %}
+                  <br>
+                  <input type='submit' class="btn btn-success" value='Change'>
+                  <a class='btn btn-success' href="http://localhost:8000/site_app/checkout_page?customerid={{customerdata.id}}">Next</a>
+                </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!--end first row -->
+</section>
+{% endblock content %}

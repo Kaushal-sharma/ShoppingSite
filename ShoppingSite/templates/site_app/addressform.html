@@ -1,0 +1,49 @@
+{% extends 'site_app/base_page.html' %}
+{% load static %}
+{% block title %}Shopping | Checkout {% endblock title %}
+
+{% block content %}
+<!--hero-->
+
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h2>Billing Details</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8">
+          <div class="row">
+            <div class="col">
+                <h3>Enter Delivery Address</h3>
+                <hr>
+                <form action="{% url 'address_page' %}" method="POST" class="p-5 mb-4 bg-white rounded" nonvalidate style="border: 1px solid rgb(240, 240, 240)">
+                  {% csrf_token %}
+
+                  {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                      <p>{{error}}</p>
+                    {% endfor %}
+                  {% endif %}
+
+                  {% for fm in form %}
+                   <div class="p-2">{{fm.label_tag}}</div>
+                   <div>{{fm}} {{fm.errors | striptags}} </div>
+                   <br>
+                  {% endfor %}
+                  <br>
+                  <input type='submit' class="btn btn-success" value='Continue'>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!--end first row -->
+</section>
+{% endblock content %}

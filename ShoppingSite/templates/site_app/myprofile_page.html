@@ -1,0 +1,118 @@
+{% extends 'site_app/base_page.html' %}
+
+<!--THis is here to use not show second navbar-->
+{% block second-navbar %} {% endblock second-navbar %}
+
+{% block title %} ShoppingSite | myprofile {% endblock title%}
+
+{% block content %}
+
+<!--Admin page start-->
+{% if Users != None %}
+
+    <div class="row">
+        <div class="col">
+            <h4 class="p-3" style="color: rgb(73,80,87)">Dashboard</h4>
+        </div>
+    </div>
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Last login</th>
+                    <th>Date joined</th>
+                </tr>
+            </thead>
+             <tbody >
+                {% for user in Users %}
+                    <tr>
+                        <td><a class="nav-link link-info" href="http://localhost:8000/site_app/userdetail_page?userid={{user.id}}">{{user.username}}</a></td>
+                        <td>{{user.first_name}}</td>
+                        <td>{{user.last_name}}</td>
+                        <td>{{user.last_login}}</td>
+                        <td>{{user.date_joined}}</td>
+                    </tr>
+                {% endfor %}
+             </tbody>
+        <table>
+    </div>
+
+{% endif %}<!--Admin page end-->
+
+<!--User page start-->
+{% if Users == None %}
+
+<div class="row">
+        <div class="col-sm-3">
+            <div class="row pt-3">
+                <div class="col shadow m-4 p-3" style="background-color: white;">
+                    <i class="fa fa-user-circle-o" aria-hidden="true" style="font-size: 50px;"></i>
+                        {% csrf_token %}
+                        {% if message %}
+                            {% for msg in messages %}
+                                <span {% if msg.tags %} class="{{msg.tags}}" {% endif %}>{{msg}}<span>
+                            {% endfor %}
+                        {% endif %}
+                        <h4>{{firstname}} {{lastname}}</h4>
+                </div>
+            </div>
+            <div class="row pt-1">
+                <div class="col shadow m-4 p-3" style="background-color: white;">
+                    <ul class="sidebar">
+                        <li class="nav-link">
+                            <a class="nav-item btn" href="http://localhost:8000/site_app/order_page/"><i class="fa fa-shopping-basket" aria-hidden="true"></i>&nbsp;My orders</a>
+                        </li>
+                        <li class="nav-link">
+                            <a class="nav-item btn" href="#"><i class="fa fa-heart" aria-hidden="true"></i>&nbsp;Wish list</a>
+                        </li>
+                        <li class="nav-link">
+                            <a class="nav-item btn" href="http://localhost:8000/site_app/changepassword_page/"><i class="fa fa-cog" aria-hidden="true"></i>&nbsp; Change password</a>
+                        </li>
+                        <li class="nav-link">
+                            <a class="nav-item btn" href="#"><i class="fa fa-credit-card-alt" aria-hidden="true"></i>&nbsp;Payment</a>
+                        </li>
+                        <li class="nav-link">
+                            <a class="nav-item btn" href="http://localhost:8000/site_app/user_logout/"><i class="fa fa-sign-out" aria-hidden="true"></i>&nbsp;Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-9">
+            <div class="row pt-3">
+                <div class="col shadow m-4 p-3" style="background-color: white;">
+                    <div class="row">
+                      <div class="col-sm-12">
+                        <h3>Personal Information</h3>
+                        <form class="form-group" action="" method='POST'>
+                          {% csrf_token %}
+
+                          {% if messages %}
+                            {% for message in messages %}
+                              <small {% if message.tags %} class="{{message.tags}} text-success" {% endif %}>{{message}}</small>
+                            {% endfor %}
+                          {% endif %}
+
+                          {% for fm in form %}
+                           <div class="p-2">{{fm.label_tag}}</div>
+                           <div>{{fm}} {{fm.errors | striptags}} </div>
+                           <br>
+                          {% endfor %}
+
+                          <input type="submit" value="Save" class="btn btn-primary">
+                        </form>
+                      </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}<!--User page end-->
+
+{% endblock content %}

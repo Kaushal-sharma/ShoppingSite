@@ -1,0 +1,125 @@
+{% extends 'site_app/base_page.html' %}
+{% load static %}
+{% block title %}Shopping | Checkout {% endblock title %}
+
+{% block content %}
+<!--hero-->
+
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                <h2>Payment</h2>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+
+      <div class="row">
+        <div class="col-sm-8">
+          {% csrf_token %}
+          {% if messages %}
+            {% for msg in messages %}
+              <div class="alert"><small {% if msg.tags %} class="{{mesg.tags}}" {% endif %}>{{msg}}</small></div>
+            {% endfor %}
+          {% endif %}
+          <div class="row">
+            <div class="col">
+              <h4>Order Summary</h4>
+                <hr>
+                {% for data in cartdetails %}
+                  <div class="card mb+-2">
+                    <div class="card-body">
+                      <div class="row">
+                      <div class="col-sm-2">
+                        <img src="{{data.product.product_image.url}}" alt="Image not show" class="" style='width: 100px;'>
+                      </div>
+                      <div class="col-sm-10">
+                        <h5>{{data.product.title}}</h5>
+                        <p>Quantity: {{data.quantity}}</p>
+                        <p>Description: {{data.product.description}}
+                        <p class="fw-bold">Price: {{data.product.discount_price}}</p>
+                        <a class="remove-item  nav-link rounded bg-red-500 text-white text-center" style="cursor: pointer; width: 20%" productid="{{data.product.id}}">Cancel</a>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+               {% endfor %}
+              </div>
+            </div>
+          </div>
+        <div class="col-sm-4 p-3">
+          <div class="row mt-5">
+            <div class="col " style="border: 1px solid rgb(240, 240, 240)">
+              <h3>Order Summary</h3>
+              <hr>
+              <div class="row p-2">
+                <div class="col-sm-8">Subtotal</div>
+                <div class="col-sm-4 text-right"><span id='subtotal' class="text-thin">{{subtotal}}</span></div>
+              </div>
+              <div class="row p-2">
+                <div class="col-sm-8">Shippping</div>
+                <div class="col-sm-4 text-right"><span id='shipcharg'>{{ship_charg}}</span></div>
+              </div>
+              <hr>
+              <div class="row p-2">
+                <div class="col-sm-8">Total</div>
+                <div class="col-sm-4 text-right"><span style="font-weight: bold;" id='total'><i class="fa fa-inr" aria-hidden="true"></i>{{total}}</span></div>
+              </div>
+              <div class="row p-2">
+                <form class="" action="{% url 'order_page' %}" method="post" id="mypayment">
+                  {% csrf_token %}
+                  {% for data in customerid %}
+                    <input type="hidden" name="customerid" value="{{data.id}}">
+                  {% endfor %}
+                  <!-- Set up a container element for the button -->
+                  <div id="paypal-button-container"></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!--end first row -->
+    </div>
+</section>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/javascript.js' %}"></script>
+{% endblock content %}
+
+{% block payment-gateway %}
+<!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=Ac8xM0DlRIl0y2xMRGoP9Jo49dOFML3VevSayAbGRN-52flsavDOipo2OceRmUk1DD1JNEC4_kqhP7Hd&currency=USD"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{total}}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                    document.getElementById('mypayment').submit();
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+{% endblock payment-gateway %}
